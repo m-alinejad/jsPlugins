@@ -1,0 +1,45 @@
+<html>
+<head>
+
+<link rel="stylesheet" href = "irPlaque.css" />
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://unpkg.com/popper.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script src="irplaque.js"></script>
+
+</head>
+<body>
+<pre>
+/*
+ * IrPlaque v1.0.0
+ * By Meghdad Alinejad
+ * alinejad.mgh@gmail.com
+ * https://github.com/m-alinejad/jsPlugins/irPlaque
+ */
+</pre>
+<select id="plaque1typeselector" />
+<input id="plaque1" data-typeselector="#plaque1typeselector" value="#P24Pj327:32" />
+
+<br />
+<select id="plaque2typeselector" />
+<input id="plaque2" data-typeselector="#plaque2typeselector" value="%X12XT123:55" />
+<label id="plaque2valid"></label> 
+<br />
+
+<select id="plaque3typeselector" />
+<input id="plaque3" data-typeselector="#plaque3typeselector" value="$K12345:22" />
+
+<label id="pvalid"></label> 
+
+<script>
+	$("#plaque1").irplaque({ size: 'small' });
+	$("#plaque2").irplaque({ size: 'medium', validationlabel : '#plaque2valid' });
+	$("#plaque3").irplaque({ size: 'larg' }).on('change', function(){
+		$('#pvalid').text(this.validationMessage);
+	});
+</script>
+
+</body>
+
+</html>
