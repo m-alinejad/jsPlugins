@@ -1,15 +1,13 @@
 ﻿/*
- * IrPlaque v1.0.0
+ * IrPlaque v1.1.0
  * By Meghdad Alinejad
- * alinejad.mgh@gmail.com
- * https://github.com/m-alinejad/jsPlugins/irPlaque
+ * https://github.com/m-alinejad/jsPlugins
  */
 
 function IrPlaque(element, options) {
     var defaults = {
         size: 'larg',
         defaultchar: 'PB',
-		showText: false,
         typeselector: null,
         validationlabel: null,
         tpl: {
@@ -30,13 +28,7 @@ function IrPlaque(element, options) {
     this.rightBox = $('<input class="irplaque-right" type="text">');
     this.irBox = $('<input class="irplaque-ir" type="text">');
     this.midBox = $('<select class="irplaque-mid">');
-    this.inputText = $('<input type="text">').attr('id', this.input.attr('id') + 'Text').attr('name', this.input.attr('id') + 'Text');
-	if(this.settings.showText){
-		this.inputText.removeClass("hidden");
-	}
-	else{
-		this.inputText.addClass("hidden");
-	}
+    this.inputText = $('<input class="hidden" type="text">').attr('id', this.input.attr('id') + 'ParsedText').attr('name', this.input.attr('id') + 'ParsedText');;
     this.typeselector = $(this.settings.typeselector);
     this.logoBox = $('<button type="button" class="irplaque-logo"></button>');
     this.popper = $('<div class="irplaque-popper"></div>');
@@ -152,6 +144,9 @@ function IrPlaque(element, options) {
                 irplaqueObject.validate();
             }
             else {
+                if (irplaqueObject.input[0].value === '@' || irplaqueObject.input[0].value === '') {
+                    irplaqueObject.input[0].value = e.target.value;
+                }
                 irplaqueObject.wrapper.removeClass('no-plaque');
                 irplaqueObject.destroy();
                 irplaqueObject.init();
@@ -222,7 +217,7 @@ IrPlaque.prototype.createElements = function () {
 
 
     // decode the current value
-    this.parsValue();
+    this.parseValue();
 
 
     // Disable the control 
@@ -239,6 +234,7 @@ IrPlaque.prototype.createElements = function () {
 }
 
 IrPlaque.prototype.createElementsFreeArea = function () {
+    // 
     // create the control
     this.isInit = true;
     this.input.wrap($(this.settings.tpl[this.settings.size]));
@@ -291,16 +287,15 @@ IrPlaque.prototype.createElementsFreeArea = function () {
     // Create logo popper
     this.popper.html('');
     $(this.areas).each(function () {
-        var box = $('<button class="irplaque-logo">').addClass(this.cssClass)
+        var box = $('<button type="button" class="irplaque-logo">').addClass(this.cssClass)
             .attr('value', this.code)
             .attr('title', this.title)
-			.attr('type', 'button')
-            .on('click', function (e) {
-				e.stopPropagation();
+            .on('click', function () {
                 $(irplaqueObject.logoBox)
                     .removeClass('anzali aras arvand chabahar gheshm kish maku')
                     .addClass($(this).attr('class'))
                     .attr('value', $(this).attr('value'))
+                    .attr('title', $(this).attr('title'))
                     .trigger('change');
                 irplaqueObject.popper.toggle();
 
@@ -309,8 +304,7 @@ IrPlaque.prototype.createElementsFreeArea = function () {
     });
     irplaqueObject.popper.hide();
 
-    this.logoBox.on('click', function (e) {
-		e.stopPropagation();
+    this.logoBox.on('click', function () {
         popper.toggle();
     });
 
@@ -319,8 +313,7 @@ IrPlaque.prototype.createElementsFreeArea = function () {
         placement: 'right'
     });
     this.logoBox.off('click');
-    this.logoBox.on('click', function (e) {
-		e.stopPropagation();
+    this.logoBox.on('click', function () {
         irplaqueObject.popper.toggle();
     });
 
@@ -331,6 +324,7 @@ IrPlaque.prototype.createElementsFreeArea = function () {
     var inputText = this.inputText;
 
     function getChange(event) {
+        // 
         input[0].value = irplaqueObject.getValue();
         inputText[0].value = irplaqueObject.getText();;
         irplaqueObject.validate();
@@ -342,7 +336,7 @@ IrPlaque.prototype.createElementsFreeArea = function () {
 
 
     // decode the current value
-    this.parsValue();
+    this.parseValue();
     labelLeft.text(repchar(this.leftBox[0].value));
     labelright.text(repchar(this.rightBox[0].value));
 
@@ -367,8 +361,16 @@ IrPlaque.prototype.createElementsTaxi = function () {
 }
 
 IrPlaque.prototype.getValue = function () {
+
+    // 
+
     var pValue = "#";
     if (this.typeselector.length) {
+
+        if (this.typeselector.hasClass('hidden') || this.typeselector.css('display') === 'none') {
+            return this.input[0].value;
+        }
+
         pValue = this.typeselector[0].value;
     }
 
@@ -417,7 +419,7 @@ IrPlaque.prototype.getText = function () {
     }
     // Free area
     else if (pValue === '$') {
-        pValue += this.logoBox.attr('title');
+        pValue += this.logoBox.attr('title') + ' ';
         pValue += this.leftBox[0].value.padStart(5, '0');
         pValue += '/';
         pValue += this.rightBox[0].value.padStart(2, '0');
@@ -426,12 +428,15 @@ IrPlaque.prototype.getText = function () {
     else {
         pValue = '-';
     }
+
+    this.inputText[0].value = pValue;
+
     return pValue;
 
 
 }
 
-IrPlaque.prototype.parsValue = function () {
+IrPlaque.prototype.parseValue = function () {
 
     var cValue = this.input[0].value;
     if (cValue === '') {
@@ -440,6 +445,8 @@ IrPlaque.prototype.parsValue = function () {
     }
 
     var pValue = cValue.substr(0, 1);
+
+    this.typeselector[0].value = pValue;
 
     // General | Taxi
     if (pValue === '#' || pValue === '%') {
@@ -452,10 +459,13 @@ IrPlaque.prototype.parsValue = function () {
     // Free area
     else if (pValue === '$') {
 
-        this.logoBox.removeClass('anzali aras arvand chabahar gheshm kish maku')
-            .addClass(this.areas.find(a => a.code === cValue.substr(1, 1)).cssClass)
-            .attr('value', cValue.substr(1, 1))
-
+        var cl = this.areas.find(a => a.code === cValue.substr(1, 1));
+        if (cl) {
+            this.logoBox.removeClass('anzali aras arvand chabahar gheshm kish maku')
+                .addClass(cl.cssClass)
+                .attr('title', cl.title)
+                .attr('value', cValue.substr(1, 1))
+        }
         this.leftBox[0].value = cValue.substr(2, 5);
         this.rightBox[0].value = cValue.substr(8, 2);
     }
@@ -469,6 +479,7 @@ IrPlaque.prototype.parsValue = function () {
             .attr('value', '');
         this.leftBox.trigger('change');
     }
+    this.getText();
     this.validate();
     this.input.trigger('change');
 
@@ -531,6 +542,7 @@ IrPlaque.prototype.enable = function () {
 };
 
 IrPlaque.prototype.validate = function () {
+    
     var value = this.getValue();
     var type = "#";
     if (this.typeselector.length) {
@@ -540,16 +552,18 @@ IrPlaque.prototype.validate = function () {
         (type === '%') ? /^%X\d{2}XT\d{3}:\d{2}$/ :
             (type === '$') ? /^\$\w\d{5}:\d{2}$/ :
                 /^@$/;
-    var result = regex.test(value);
+    var result = regex.test(value.trim());
 
     if (!result) {
         this.input[0].setCustomValidity('شماره پلاک وارد شده معتبر نیست.');
+        this.leftBox[0].setCustomValidity('شماره پلاک وارد شده معتبر نیست.');
         if (this.validationlabel) {
             $(this.validationlabel).show().text(this.input[0].validationMessage);
         }
     }
     else {
         this.input[0].setCustomValidity('');
+        this.leftBox[0].setCustomValidity('');
         if (this.validationlabel) {
             $(this.validationlabel).hide();
         }
