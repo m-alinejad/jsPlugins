@@ -135,6 +135,7 @@ function IrPlaque(element, options) {
         });
         ttypeselector[0].value = this.input[0].value.substr(0, 1);
         ttypeselector.on('change', function (e) {
+			
             // noPlaque type handler
             if (e.target.value === '@') {
                 irplaqueObject.wrapper.removeClass('free-area');
@@ -144,7 +145,11 @@ function IrPlaque(element, options) {
                 irplaqueObject.validate();
             }
             else {
-                if (irplaqueObject.input[0].value === '@' || irplaqueObject.input[0].value === '') {
+                if (irplaqueObject.input[0].value === '@' 
+				|| irplaqueObject.input[0].value === ''
+				|| irplaqueObject.input[0].value.substring(0,1) !== e.target.value
+				
+				) {
                     irplaqueObject.input[0].value = e.target.value;
                 }
                 irplaqueObject.wrapper.removeClass('no-plaque');
@@ -165,6 +170,7 @@ function IrPlaque(element, options) {
 
 IrPlaque.prototype.createElements = function () {
     // create the control
+	
     this.isInit = true;
     this.input.wrap($(this.settings.tpl[this.settings.size]));
     this.wrapper = this.input.parent();
@@ -175,6 +181,8 @@ IrPlaque.prototype.createElements = function () {
     this.midBox.insertBefore(this.rightBox);
     this.leftBox.insertBefore(this.midBox);
     this.inputText.insertAfter(this.input);
+	
+	this.midBox.attr('disabled', '');
 
     this.leftBox.mask('99');
     this.rightBox.mask('999');
