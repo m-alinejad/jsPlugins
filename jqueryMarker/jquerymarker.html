@@ -1,0 +1,43 @@
+<html>
+<head>
+
+<link rel="stylesheet" href = "jquerymarker.css" />
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://unpkg.com/popper.js"></script>
+<script src="jquery.mask.min.js"></script>
+<script src="jquerymarker.js"></script>
+
+</head>
+<body>
+
+
+
+<input id="marker" data-marks = "[{'id':'c3ee25f3-1505-4dbe-b012-276ac02c3185','x':239,'y':231},{'id':'4c931d6e-d2ad-41fe-bb5b-204a4befca7a','x':446,'y':255},{'id':'3d757917-49f9-4613-baee-83d9ba786e85','x':433,'y':442},{'id':'5c8ff202-bc46-4db3-a8f7-665d4bf1077d','x':340,'y':454},{'id':'bce566b2-1352-4b0c-aac0-526edba1a06d','x':567,'y':425},{'id':'e70b2982-4250-490a-b128-c5505f9b861d','x':652,'y':218},{'id':'5f6fbb38-1be5-44fa-ad3a-09515062c1ad','x':654,'y':286},{'id':'c0ccb54f-b986-4d91-b6a6-b4496e26da13','x':727,'y':204},{'id':'2b4c573f-42e4-4bf7-a824-da7e80f5b632','x':734,'y':317},{'id':'1c31a6ed-7758-4c43-8c53-685c9f659ce7','x':492,'y':92},{'id':'988f8c95-f732-43d3-88e6-65da860b9621','x':533,'y':93},{'id':'983dacda-347e-4288-889f-471c01d648b7','x':533,'y':144},{'id':'f694e589-3730-4f5c-a834-c1a32579e0e2','x':252,'y':95},{'id':'58bb4a1a-5b70-440d-ac1d-743b01623a6e','x':48,'y':209},{'id':'475ba41d-362a-4aaf-8c1c-2df500c5d8e2','x':72,'y':304}]"/>
+<br />
+<input id="marker1" data-marks = "[{'id':'c3ee25f3-1505-4dbe-b012-276ac02c3185','x':239,'y':231},{'id':'4c931d6e-d2ad-41fe-bb5b-204a4befca7a','x':446,'y':255},{'id':'3d757917-49f9-4613-baee-83d9ba786e85','x':433,'y':442},{'id':'5c8ff202-bc46-4db3-a8f7-665d4bf1077d','x':340,'y':454},{'id':'bce566b2-1352-4b0c-aac0-526edba1a06d','x':567,'y':425},{'id':'e70b2982-4250-490a-b128-c5505f9b861d','x':652,'y':218},{'id':'5f6fbb38-1be5-44fa-ad3a-09515062c1ad','x':654,'y':286},{'id':'c0ccb54f-b986-4d91-b6a6-b4496e26da13','x':727,'y':204},{'id':'2b4c573f-42e4-4bf7-a824-da7e80f5b632','x':734,'y':317},{'id':'1c31a6ed-7758-4c43-8c53-685c9f659ce7','x':492,'y':92},{'id':'988f8c95-f732-43d3-88e6-65da860b9621','x':533,'y':93},{'id':'983dacda-347e-4288-889f-471c01d648b7','x':533,'y':144},{'id':'f694e589-3730-4f5c-a834-c1a32579e0e2','x':252,'y':95},{'id':'58bb4a1a-5b70-440d-ac1d-743b01623a6e','x':48,'y':209},{'id':'475ba41d-362a-4aaf-8c1c-2df500c5d8e2','x':72,'y':304}]"/>
+<br />
+<input id="marker2" data-marks = "[{'id':'c3ee25f3-1505-4dbe-b012-276ac02c3185','x':239,'y':231},{'id':'4c931d6e-d2ad-41fe-bb5b-204a4befca7a','x':446,'y':255},{'id':'3d757917-49f9-4613-baee-83d9ba786e85','x':433,'y':442},{'id':'5c8ff202-bc46-4db3-a8f7-665d4bf1077d','x':340,'y':454},{'id':'bce566b2-1352-4b0c-aac0-526edba1a06d','x':567,'y':425},{'id':'e70b2982-4250-490a-b128-c5505f9b861d','x':652,'y':218},{'id':'5f6fbb38-1be5-44fa-ad3a-09515062c1ad','x':654,'y':286},{'id':'c0ccb54f-b986-4d91-b6a6-b4496e26da13','x':727,'y':204},{'id':'2b4c573f-42e4-4bf7-a824-da7e80f5b632','x':734,'y':317},{'id':'1c31a6ed-7758-4c43-8c53-685c9f659ce7','x':492,'y':92},{'id':'988f8c95-f732-43d3-88e6-65da860b9621','x':533,'y':93},{'id':'983dacda-347e-4288-889f-471c01d648b7','x':533,'y':144},{'id':'f694e589-3730-4f5c-a834-c1a32579e0e2','x':252,'y':95},{'id':'58bb4a1a-5b70-440d-ac1d-743b01623a6e','x':48,'y':209},{'id':'475ba41d-362a-4aaf-8c1c-2df500c5d8e2','x':72,'y':304}]"/>
+
+
+<script>
+	$("#marker").jquerymarker({ size: 'small', imageurl: 'kia.png' });
+	$("#marker1").jquerymarker(
+		{ 
+			size: 'medium', 
+			imageurl: 'kia.png',
+			message: {
+				clearconfirm: 'Are you sure?'
+			},
+			label: {
+				cleartooltip: 'Clear all markers'
+			}
+		}
+	);
+	$("#marker2").jquerymarker({ size: 'larg', imageurl: 'kia.png' });
+	
+</script>
+
+</body>
+
+</html>

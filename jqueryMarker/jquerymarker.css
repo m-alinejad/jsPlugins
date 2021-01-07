@@ -1,0 +1,85 @@
+.jquerymarker{
+	position: relative;
+}
+.jquerymarker .btn-clear{
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 10px;
+	left: 10px;
+}
+.jquerymarker .markarea{
+	border: solid 2px darkgray;
+	border-radius: 20px;
+}
+
+
+.jquerymarker.jquerymarker-larg{
+	width: 800px;
+	height: 518px;
+}
+.jquerymarker.jquerymarker-larg .markarea{
+	width: 100%;
+	height: 100%;
+	background-color: lightblue;
+	cursor: pointer;
+	position: relative;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.jquerymarker.jquerymarker-larg .markarea .mark{
+	width: 8px;
+	height: 8px;
+	background-color: red;
+	border: solid 1px red;
+	border-radius: 6px;
+	cursor: pointer;
+	position: absolute;
+}
+
+.jquerymarker.jquerymarker-medium{
+	width: 400px;
+	height: 259px;
+}
+.jquerymarker.jquerymarker-medium .markarea{
+	width: 100%;
+	height: 100%;
+	background-color: lightblue;
+	cursor: pointer;
+	position: relative;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.jquerymarker.jquerymarker-medium .markarea .mark{
+	width: 6px;
+	height: 6px;
+	background-color: red;
+	border: solid 1px red;
+	border-radius: 6px;
+	cursor: pointer;
+	position: absolute;
+}
+
+
+.jquerymarker.jquerymarker-small{
+	width: 200px;
+	height: 129px;
+}
+.jquerymarker.jquerymarker-small .markarea{
+	width: 100%;
+	height: 100%;
+	background-color: lightblue;
+	cursor: pointer;
+	position: relative;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.jquerymarker.jquerymarker-small .markarea .mark{
+	width: 4px;
+	height: 4px;
+	background-color: red;
+	border: solid 1px red;
+	border-radius: 6px;
+	cursor: pointer;
+	position: absolute;
+}
