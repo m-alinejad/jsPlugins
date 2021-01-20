@@ -1,5 +1,5 @@
 ﻿/*
- * IrPlaque v1.1.0
+ * IrPlaque v1.1.1
  * By Meghdad Alinejad
  * https://github.com/m-alinejad/jsPlugins
  */
@@ -14,6 +14,13 @@ function IrPlaque(element, options) {
             larg: '<div class="irplaque irplaque-larg"></div>',
             medium: '<div class="irplaque irplaque-medium"></div>',
             small: '<div class="irplaque irplaque-small"></div>'
+        },
+        types: {
+            general: true,
+            freeArea: true,
+            taxi: true,
+            pdi: true,
+            none: true
         }
     };
     this.irplaque = this;
@@ -33,12 +40,14 @@ function IrPlaque(element, options) {
     this.logoBox = $('<button type="button" class="irplaque-logo"></button>');
     this.popper = $('<div class="irplaque-popper"></div>');
     this.types = [
-        { code: '#', title: 'عادی' },
-        { code: '$', title: 'منطقه آزاد' },
-        { code: '%', title: 'تاکسی' },
-        { code: '@', title: 'بدون پلاک' },
+        { code: '#', title: 'عادی', 	  active: this.settings.types.general },
+        { code: '$', title: 'منطقه آزاد', active: this.settings.types.freeArea },
+        { code: '%', title: 'تاکسی',      active: this.settings.types.taxi },
+        { code: '&', title: 'PDI',        active: this.settings.types.pdi },
+        { code: '@', title: 'بدون پلاک',   active: this.settings.types.none }
     ];
     this.areas = [
+		{ code: '-', title: '-', cssClass: 'noarea' },
         { code: 'A', title: 'انزلی', cssClass: 'anzali' },
         { code: 'R', title: 'ارس', cssClass: 'aras' },
         { code: 'V', title: 'اروند', cssClass: 'arvand' },
@@ -123,7 +132,7 @@ function IrPlaque(element, options) {
     var irplaqueObject = this;
     if (this.typeselector.length) {
         var ttypeselector = this.typeselector;
-        $(this.types).each(function () {
+		$($.grep(this.types, t => t.active)).each(function () {
             $(ttypeselector).append(
                 $('<option/>',
                     {
@@ -142,6 +151,19 @@ function IrPlaque(element, options) {
                 irplaqueObject.wrapper.addClass('no-plaque');
                 irplaqueObject.input[0].value = '@';
                 irplaqueObject.midBox[0].value = "";
+				irplaqueObject.leftBox[0].value = "";
+				irplaqueObject.rightBox[0].value = "";
+				irplaqueObject.getText();
+                irplaqueObject.validate();
+            } else if (e.target.value === '&') {
+                irplaqueObject.wrapper.removeClass('free-area');
+                irplaqueObject.wrapper.removeClass('no-plaque');
+				irplaqueObject.wrapper.addClass('pdi-plaque');
+                irplaqueObject.input[0].value = '&';
+                irplaqueObject.midBox[0].value = "";
+				irplaqueObject.leftBox[0].value = "";
+				irplaqueObject.rightBox[0].value = "";
+				irplaqueObject.getText();
                 irplaqueObject.validate();
             }
             else {
@@ -254,7 +276,7 @@ IrPlaque.prototype.createElementsFreeArea = function () {
     this.logoBox.insertBefore(this.leftBox);
     this.inputText.insertAfter(this.input);
     this.popper.insertAfter(this.logoBox);
-
+	this.logoBox.addClass('noarea');
     this.leftBox.mask('99999');
     this.rightBox.mask('99');
 
@@ -300,7 +322,7 @@ IrPlaque.prototype.createElementsFreeArea = function () {
             .attr('title', this.title)
             .on('click', function () {
                 $(irplaqueObject.logoBox)
-                    .removeClass('anzali aras arvand chabahar gheshm kish maku')
+                    .removeClass('anzali aras arvand chabahar gheshm kish maku noarea')
                     .addClass($(this).attr('class'))
                     .attr('value', $(this).attr('value'))
                     .attr('title', $(this).attr('title'))
@@ -401,7 +423,11 @@ IrPlaque.prototype.getValue = function () {
         pValue += ':';
         pValue += this.rightBox[0].value;
     }
-    // No plaque
+    // PDI
+    else if (pValue === '&') {
+        pValue = '&';
+    }
+	// No plaque
     else {
         pValue = '@';
     }
@@ -432,9 +458,13 @@ IrPlaque.prototype.getText = function () {
         pValue += '/';
         pValue += this.rightBox[0].value.padStart(2, '0');
     }
+	// PDI
+	else if (pValue === '&'){
+        pValue = '&PDI';
+    }
     // No plaque
     else {
-        pValue = '-';
+        pValue = '@-';
     }
 
     this.inputText[0].value = pValue;
@@ -469,7 +499,7 @@ IrPlaque.prototype.parseValue = function () {
 
         var cl = this.areas.find(a => a.code === cValue.substr(1, 1));
         if (cl) {
-            this.logoBox.removeClass('anzali aras arvand chabahar gheshm kish maku')
+            this.logoBox.removeClass('anzali aras arvand chabahar gheshm kish maku noarea')
                 .addClass(cl.cssClass)
                 .attr('title', cl.title)
                 .attr('value', cValue.substr(1, 1))
@@ -559,6 +589,7 @@ IrPlaque.prototype.validate = function () {
     var regex = (type === '#') ? /^#\w\d{2}\w{2}\d{3}:\d{2}$/ :
         (type === '%') ? /^%X\d{2}XT\d{3}:\d{2}$/ :
             (type === '$') ? /^\$\w\d{5}:\d{2}$/ :
+			   (type === '&') ? /^&$/ :
                 /^@$/;
     var result = regex.test(value.trim());
 

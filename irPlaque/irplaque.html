@@ -12,7 +12,7 @@
 <body>
 <pre>
 /*
- * IrPlaque v1.0.0
+ * IrPlaque v1.1
  * By Meghdad Alinejad
  * alinejad.mgh@gmail.com
  * https://github.com/m-alinejad/jsPlugins/irPlaque
@@ -33,7 +33,7 @@
 <label id="pvalid"></label> 
 
 <script>
-	$("#plaque1").irplaque({ size: 'small' });
+	$("#plaque1").irplaque({ size: 'small', types: { none:false, pdi:false} });
 	$("#plaque2").irplaque({ size: 'medium', validationlabel : '#plaque2valid' });
 	$("#plaque3").irplaque({ size: 'larg' }).on('change', function(){
 		$('#pvalid').text(this.validationMessage);
